@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>행정문서 순화 편집기</title>
+<style>
+:root{color-scheme:light;--ink:#182432;--muted:#4b5d69;--line:#d6e0e3;--green:#086653;--wash:#edf5f1}
+*{box-sizing:border-box}body{margin:0;background:#f3f7f6;color:var(--ink);font:16px/1.6 system-ui,sans-serif}main{max-width:1180px;margin:auto;padding:38px 22px 64px}header{margin-bottom:24px}.brand{display:flex;align-items:center;gap:16px;border-bottom:3px solid #176b9a;padding:0 0 18px;margin-bottom:22px}.brand img{width:78px;height:78px;object-fit:contain}.brand-copy{min-width:0}.brand-copy h1{font-size:clamp(23px,4vw,36px)}.brand-tag{font-size:13px;letter-spacing:.08em;color:#3a6f85;font-weight:700}@media(max-width:730px){.brand img{width:58px;height:58px}}h1{margin:0;font-size:clamp(26px,5vw,42px);letter-spacing:-.07em}h2{font-size:20px;margin:0}p{margin:6px 0 14px;color:var(--muted)}button,input,select,textarea{font:inherit}button,select,input{border:1px solid var(--line);border-radius:7px;background:#fff;color:inherit;padding:8px 11px}button{cursor:pointer;font-weight:650}button:hover{background:var(--wash)}button.primary{background:var(--green);color:#fff;border-color:var(--green)}:focus-visible{outline:3px solid #499c8d;outline-offset:2px}.row{display:flex;flex-wrap:wrap;align-items:center;gap:9px}.split{justify-content:space-between}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel,details{min-width:0;border:1px solid var(--line);background:white;border-radius:12px;padding:18px;margin-bottom:16px}textarea,.document{width:100%;min-height:275px;margin-top:10px;padding:13px;border:1px solid var(--line);border-radius:8px;background:#fbfdfc;color:var(--ink);line-height:1.65;overflow-wrap:anywhere;white-space:pre-wrap}textarea{resize:vertical;display:block}.document{font-size:16px}mark{background:#f9e9a9;color:inherit;border-radius:3px}mark.applied{background:#cdeedd}mark.protected{background:#e9ebf4}.edit{cursor:text}.cards{display:grid;gap:9px;margin-top:12px}.card{border:1px solid var(--line);border-radius:8px;padding:12px}.card p{white-space:pre-wrap;overflow-wrap:anywhere;margin:6px 0}.card input,.card select{max-width:100%}.badge{font-size:13px;color:#344066;background:#eff0f7;padding:2px 8px;border-radius:5px}.note,small{color:var(--muted);font-size:14px}summary{cursor:pointer;font-weight:700}.settings{display:grid;gap:14px;margin-top:12px}.settings input[type=file]{max-width:100%}#entries,#dictResults{max-height:240px;overflow:auto}.entry{margin:4px 0}.entry button{padding:2px 8px}output{display:block;min-height:25px;margin:0 0 8px;color:var(--green)}[hidden]{display:none!important}@media(max-width:730px){main{padding:22px 12px}.grid{grid-template-columns:1fr;gap:0}textarea,.document{min-height:190px}}
+</style>
+</head>
+<body>
+<main>
+<header class="brand"><img src="data:image/gif;base64,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" alt="서초구 공식 상징"><div class="brand-copy"><div class="brand-tag">SEOCHO-GU · 행정문서 편집</div><h1>행정용어 순화 편집기</h1><p>보도자료와 공고문을 주민이 이해하기 쉬운 표현으로 다듬어 보세요.</p></div></header>
+<section class="panel row split" aria-label="분석 설정">
+<div class="row"><label for="mode">문서 유형</label><select id="mode"><option value="press">보도자료</option><option value="notice">공고문</option></select><button class="primary" id="analyze">검사하기</button><button id="sample">예문 넣기</button></div>
+<small id="dictionaryCount"></small>
+</section>
+<output id="status" role="status"></output>
+<div class="grid">
+<section class="panel"><h2><label for="source">원문</label></h2><textarea id="source" placeholder="제목과 본문을 붙여넣으세요." spellcheck="false"></textarea><div id="comparison" class="document" aria-label="원문 변경 위치" hidden></div><button id="editSource" hidden>원문 편집</button></section>
+<section class="panel"><div class="row split"><h2>수정안</h2><button class="primary" id="copy" disabled>최종본 복사</button></div><div id="result" class="document" aria-label="수정안"></div><small>수정안의 일반 문구를 눌러 편집할 수 있어요. 표시된 용어는 아래 목록에서 바꾸세요.</small></section>
+</div>
+<section class="panel"><div class="row split"><h2>용어 검토</h2><div class="row"><button id="applyAll">사전 제안 적용</button><button id="keepAll">모두 원문 유지</button></div></div><div id="suggestions" class="cards"></div></section>
+<section class="panel"><h2>문장 다듬기</h2><div id="readability" class="cards"></div></section>
+<details><summary>순화 사전과 예외 관리</summary><div class="settings">
+<div><label for="xlsx">엑셀 사전 불러오기</label><p class="note">‘대상 용어’와 ‘순화어’ 열이 있는 .xlsx 파일을 선택하세요.</p><input id="xlsx" type="file" accept=".xlsx"><button id="resetDict">기본 사전 사용</button></div>
+<div class="row"><input id="lookup" aria-label="사전 검색" placeholder="용어 또는 순화어 검색"></div><div id="dictResults"></div>
+<form id="customForm" class="row"><input id="term" required aria-label="대상 용어" placeholder="대상 용어"><input id="replacement" required aria-label="순화어" placeholder="순화어"><button>사용자 사전에 추가</button></form>
+<form id="exceptForm" class="row"><input id="exception" required aria-label="예외 표현" placeholder="공식 명칭 또는 예외 표현"><button>예외 추가</button></form>
+<div id="entries"></div></div></details>
+</main>
+<script>
+const DEFAULT_DICTIONARY = [["가금류", "사육 조류"], ["가내시", "임시 통보"], ["가드레일", "보호난간"], ["가매장", "임시 매장"], ["가솔린", "휘발유"], ["가수용", "임시 수용"], ["가위탁", "임시 위탁"], ["가일층", "한층 더, 좀 더"], ["가접수", "임시 접수"], ["가제목", "임시 제목"], ["가지정", "임시 지정"], ["가치장", "임시 보관소"], ["간석지", "개펄"], ["간수", "교도관"], ["감옥", "교도소"], ["객담", "가래"], ["갤러리", "화랑"], ["갱의실/경의실", "탈의실, 옷 갈아입는 곳"], ["거마비", "① 교통비, ② 사례비"], ["거소", "사는 곳"], ["검체", "검사 대상물"], ["견사", "고치실"], ["견출지", "찾음표, 찾아보기표"], ["경구투여", "복용, 약 먹음, 복약"], ["계육", "닭고기"], ["계출", "신고"], ["계출서", "신고서"], ["고가차", "사다리차"], ["고지 방송", "안내 방송, 알림 방송"], ["고참", "선임자"], ["공란", "빈칸"], ["공병", "빈 병"], ["공사다망 중", "바쁘신 가운데, 바쁘신 데도"], ["공상", "공무 중 부상"], ["과년도", "지난해"], ["구랍", "지난해 섣달"], ["구릉", "언덕"], ["균사", "곰팡이실, 팡이실"], ["근일", "요사이, 요즘, 가까운 날"], ["글로벌", "지구촌, 국제적, 세계적, 국제, 세계"], ["금년", "올해"], ["금번", "이번"], ["금월", "이달, 이번 달"], ["급부금", "지급금, 내줄 돈"], ["끽연", "흡연"], ["낙뢰", "벼락"], ["내구연한", "사용 가능 햇수, 견딜 햇수"], ["넘버", "① 번호, 호수, 호, ② 수, 숫자"], ["노견", "갓길"], ["노이로제", "신경쇠약"], ["노후/노후한", "낡은"], ["누일", "여러 날"], ["다년생", "여러해살이"], ["담수어", "민물고기"], ["데커레이션", "장식, 꾸밈"], ["도선장", "나루터"], ["독거실", "독방"], ["독립가옥", "외딴집, 딴채 살림집"], ["돈육", "돼지고기"], ["동력거", "기계톱, 동력톱"], ["동선", "구리선"], ["동소", "같은 곳"], ["두창", "천연두, 마마"], ["드라마틱하다", "극적이다"], ["디텍터", "① 탐지기, ② 검출기, ③ 검파기, ④ 검전기"], ["라스트", "마지막, 최종"], ["라이벌", "맞수, 경쟁자"], ["라이프사이클", "① 생애 주기, ② 수명 주기"], ["라이프스타일", "생활양식"], ["래치", "걸쇠, 잠금쇠"], ["랜덤 샘플링", "임의 표본"], ["러닝타임", "상영시간"], ["레시피", "조리법"], ["레이스", "경주, 달리기"], ["레인코트", "비옷"], ["레지던시", "거주, 거주지"], ["레크리에이션", "오락, 놀이"], ["렉처", "강연, 강의"], ["로열박스", "귀빈석"], ["로열티", "사용료, 저작권료"], ["로터리식", "회전형, 회전식"], ["로프", "밧줄, 줄"], ["루베", "세제곱미터, m3"], ["룰", "규칙"], ["리더", "지도자"], ["리모델링", "새단장, 구조 변경"], ["리사이클링", "재활용"], ["리셉션", "연회, 피로연, 축하연, 초대연, 맞이 잔치"], ["리스크", "위험"], ["리플", "댓글"], ["리플릿", "광고지, 홍보지, 홍보 책자, 홍보 전단,\n광고 쪽지, 홍보물"], ["마스터플랜", "① 종합 계획, ② 기본 계획, ③ 기본 설계"], ["마켓셰어", "시장 점유율"], ["매도인", "파는 사람"], ["매수인", "사는 사람"], ["매스미디어", "대중매체"], ["맥주맥", "맥주보리"], ["맨투맨", "일대일"], ["머천다이징", "상품화"], ["멀티탭", "모둠꽂이, 모둠전원꽂이"], ["메세나", "문예후원, 예술후원"], ["메커니즘", "① 구조, 체제, 체계, ② 기제, 작용 원리"], ["메타포", "은유"], ["면포", "무명, 무명베"], ["명의 환서", "이름 바꿔 적기"], ["모델케이스", "본보기"], ["모럴", "도덕"], ["모사 우표", "위조 우표"], ["모션", "동작, 움직임, 몸짓"], ["목각인", "나무도장"], ["목근", "나무뿌리"], ["목산", "눈셈, 눈어림, 눈짐작, 눈대중"], ["목상자", "나무상자"], ["목편", "나뭇조각, 나이테 표본"], ["몽리", "수혜, 덕 봄, 이익 얻음"], ["몽리자", "수혜자"], ["뮤직아카데미", "음악원, 음악 기관, 음악 단체, 음악 학원"], ["미강", "쌀겨"], ["미니 차트", "작은 도표, 작은 괘도"], ["미스테이크", "잘못, 틀림, 실수"], ["미싱", "재봉틀"], ["믹스하다", "섞다"], ["바겐세일", "할인 판매"], ["바리케이드", "방어벽, 방어 울타리, 방책"], ["바운더리", "① 경계, 구역, ② 담당 범위, ③ 경계선"], ["바이브레이터", "진동기"], ["바이어", "구매자, 수입상"], ["바캉스", "휴가, 여름휴가"], ["발레파킹", "대리주차"], ["발치", "이뽑기"], ["방카쉬랑스", "은행연계보험"], ["백 데이터", "① 근거 자료, ② 참고 자료, ③ 보관 자료"], ["백그라운드", "① 연줄, ② 배경, ③ 바탕"], ["밸런스", "균형"], ["뱅크", "은행"], ["버추얼", "가상"], ["별송", "따로 보냄"], ["별첨", "따로 붙임"], ["보너스", "상여금"], ["보디가드", "경호원"], ["보정", "바로잡음"], ["본건", "이 사건, 이 일"], ["본드", "접착제"], ["부불금", "할부금"], ["부식토", "거름흙"], ["분묘", "무덤"], ["불원간", "머지않아"], ["불입", "납입, 납부, 냄, 치름"], ["불입 자본", "납입 자본"], ["브로커", "중개인, 거간"], ["브이아이피", "귀빈, 요인"], ["블루벨트", "청정 수역, 근해 보호 지역"], ["삐라", "전단"], ["사고다발지역", "사고잦은곳"], ["사력토", "자갈흙"], ["사보타주", "태업"], ["사시미", "생선회"], ["사양토", "모래참흙, 모래진흙"], ["살포", "뿌리기"], ["삽목", "꺾꽂이, 가지심기"], ["삽식", "꺾꽂이"], ["상시", "늘"], ["상신", "올림, 보고"], ["생장추", "나이테 측정기, 나이테 표본 채취기"], ["서머리", "간추림, 요약, 개요"], ["서비스 차지", "봉사료"], ["서클", "동아리"], ["서훈된 자", "훈장을 받은 자"], ["석력지", "자갈땅"], ["선하차 후승차", "내린 다음 타기"], ["센서", "감지기"], ["센세이션", "큰 화제, 선풍"], ["센티멘털리즘", "감상주의"], ["소류지", "늪지대, 늪지역"], ["소맥", "밀"], ["소맥분", "밀가루"], ["소스", "출처, 자료, 원전"], ["소정 기일 내", "정한 날짜 안(에)"], ["소정의", "정해진"], ["소택지", "늪, 늪지역, 습한 땅, 늪지대, 습지"], ["소트", "정렬"], ["송달지", "배달지, 받는 곳"], ["쇄토", "흙부수기"], ["수괴", "두목, 우두머리"], ["수류지", "물 흐르는 땅"], ["수목 식재", "나무심기"], ["수범", "모범"], ["수보 기관", "보고받는 기관"], ["수의 시담", "가격 협의"], ["수지품", "휴대품"], ["스마트그리드", "지능형 전력망"], ["스타디움", "경기장"], ["스태프", "제작진, 진행 요원"], ["스탠더드", "표준, 기준"], ["스테이지", "무대"], ["스파크", "불꽃"], ["스페어", "여분, 예비"], ["스피드 건", "속도 측정기"], ["슬관절", "무릎 관절"], ["습벽", "나쁜 습성, 버릇"], ["시건", "잠금"], ["시말서", "경위서"], ["시방서", "설명서"], ["식부 면적", "심은 면적"], ["신드롬", "증후군"], ["실기 사건", "때 놓친 사건"], ["심결", "심리 결정"], ["심득 사항", "마음에 새길 일"], ["심토", "속흙, 깊은 흙"], ["쓰레기 하치장", "쓰레기 처리장"], ["아나고", "붕장어"], ["아우트라인", "윤곽, 테두리, 윤곽선"], ["아이덴티티", "정체성"], ["안검", "눈꺼풀"], ["안료", "물감"], ["안면부", "얼굴 부위"], ["안출", "생각해 냄"], ["압인대", "도장 찍는 곳"], ["압착", "① 눌러 붙임, ② 눌러 짜냄"], ["앙등하다", "오르다, 뛰어오르다"], ["앙케트", "설문조사"], ["애버리지", "평균"], ["액세스", "① 접근, ② 접속"], ["액제", "물약"], ["앰뷸런스", "구급차"], ["양건 예금", "구속성 예금, 대출 조건부 예금"], ["양여", "넘겨줌"], ["어드바이스", "도움말, 조언, 충고"], ["어유", "물고기 기름"], ["어젠다", "의제"], ["언더라인", "밑줄"], ["언더커팅", "① 홈파기, ② 내려깎기, ③ 끊어쳐 날리기"], ["엄수하다", "꼭 지키다, 반드시 지키다"], ["엄책", "엄하게 꾸짖음"], ["업황", "업무 현황, 업계 현황"], ["에러", "① 실수, 실책, 잘못, ② 오류"], ["에코맘", "친환경주부, 환경 친화 주부"], ["에티켓", "① 예절, 예의, ② 품위"], ["에피소드", "일화"], ["에필로그", "끝말, 후기"], ["엑기스", "진액, 농축액"], ["엑스포", "박람회"], ["엔지니어링", "공학"], ["엘리베이터", "승강기"], ["여구 검사", "짐 검사"], ["여입 결의", "회수 결정"], ["여입금", "회수금"], ["여히", "같이"], ["연면적", "총면적, 전체 면적"], ["연초", "담배"], ["염두에 두어", "생각하여, 고려하여"], ["예가", "예정 가격"], ["예비 간벌", "미리 솎아베기"], ["예산지변과목", "예산 과목"], ["예하 기관", "소속 기관"], ["오너", "소유주"], ["오물 투기", "쓰레기 버리기"], ["오일", "기름, 석유"], ["오토메이션", "① 자동, ② 자동화"], ["오토클레이브", "멸균기"], ["오토피더", "자동 투입기"], ["오픈마켓", "열린 시장, 열린 장터"], ["오피니언 리더", "① 여론 주도자, ② 여론 주도층"], ["와가", "기와집"], ["와이어로프", "쇠밧줄"], ["와이파이", "근거리 무선망"], ["와이프", "아내, 처, 부인"], ["외주연", "바깥 둘레"], ["외포심", "두려움"], ["요계표", "집계표"], ["우각", "쇠뿔, 소뿔"], ["우수 무지", "오른 엄지"], ["우육", "쇠고기, 소고기"], ["우측 상단", "오른쪽 위, 오른쪽 위끝"], ["우측단", "오른쪽 끝"], ["우편낭", "우편 자루"], ["운휴 차량", "쉬는 차"], ["워터파크", "물놀이 공원"], ["웰빙", "참살이"], ["위격 검사", "규격 검사"], ["위규", "규정 위반"], ["위식", "거짓"], ["윈윈", "상생"], ["유도 표지판", "안내 표지판, 알림 표지판"], ["유류한", "남겨 놓은"], ["유치 증서", "보관 증서"], ["유탈", "빠뜨림"], ["유해 조수", "해로운 짐승, 유해 짐승"], ["윤허", "허락, 허가"], ["윤화", "교통사고"], ["음용수", "먹는 물, 마시는 물"], ["응당일", "그날"], ["의낭", "호주머니, 옷 주머니"], ["의료 수가", "진료비, 치료비"], ["이격 거리", "떨어진 거리"], ["이니셜", "머리글자"], ["이데올로기", "이념, 사상"], ["이메일", "전자우편"], ["이토", "① 진흙, ② 갯벌"], ["익년/익년도", "다음 해, 이듬해"], ["익월", "다음 달"], ["익일", "다음 날, 이튿날"], ["인감 개인", "인감 변경"], ["인덱스", "찾아보기"], ["인입선", "끌어들임줄, 끌어들임선"], ["인치하다", "끌어오다"], ["인터체인지", "나들목"], ["인턴", "실습, 실습 사원"], ["인포메이션", "① 정보, ② 안내"], ["인프라", "기반"], ["일광 신호경", "신호 거울"], ["일러스트레이션", "삽화, 도안"], ["일렉트로닉", "전자"], ["일부인", "날짜 도장"], ["일조점호", "아침점호"], ["입방미터", "세제곱미터, m3"], ["입보하다", "보증 서다"], ["입출항계", "입출항 신고서"], ["자모회", "어머니회"], ["자양물", "영양물"], ["작야", "어젯밤"], ["잔전", "잔돈"], ["잔존 채권", "남은 채권"], ["잠농", "누에 농사, 양잠"], ["잠업", "누에치기, 양잠 산업"], ["장리자", "관리자"], ["장제비", "장례비"], ["장치 물품", "보관 물품"], ["재근지", "근무지"], ["재도 증서", "재교부 증서"], ["재획정", "다시 정함"], ["저감", "① 낮춤, ② 줄임"], ["저락", "내림, 떨어짐"], ["적사장", "모래터"], ["적요", "요점, 주요 내용, 골자"], ["적의 처리", "알맞게 처리, 적절히 처리"], ["적치하다", "쌓아 놓다, 쌓아 두다"], ["전자유기장", "전자오락실"], ["절분 기능", "분리 기능"], ["절체 작업", "교체 작업"], ["절취선", "자르는 선"], ["정부 대상금", "대정부 대출금, 정부 대출금"], ["정부 대하금", "대정부 차입금, 정부 차입금"], ["정히", "바로, 틀림없이"], ["제반 정상", "여러 사정, 모든 사정"], ["제스처", "몸짓"], ["조상 배정", "당겨 배정, 앞당겨 배정"], ["조상 징수", "앞당겨 받음, 앞당겨 거둠"], ["족관절", "발목 관절"], ["종단 방향", "세로 방향"], ["종서", "세로쓰기"], ["죽재", "대나무"], ["준용 하천", "지방 관리 하천"], ["즉납", "즉시 납부"], ["즉보", "즉시 보고"], ["지급필", "지급 끝남, 지급 완료, 지급함, 지급했음,\n지급 끝냄"], ["직상층", "바로 위층"], ["진균", "곰팡이"], ["진동 개소", "흔들리는 곳"], ["집찰구", "표 내는 곳"], ["집표구", "표 내는 곳"], ["징벌에 처하다", "처벌하다"], ["징병서", "징병 검사서"], ["차년도", "다음 해, 다음 연도"], ["차압", "압류, 잡아둠"], ["차폐 식수", "가림나무, 심기"], ["채마밭", "채소밭"], ["채종림", "씨받이 숲"], ["채증", "증거 수집"], ["척박지", "메마른 땅"], ["척사", "윷놀이"], ["천공충", "구멍벌레"], ["첨단 벌채", "끝자르기"], ["첩로", "지름길"], ["청고병", "풋마름병, 시들병"], ["체결 행낭", "묶은 자루"], ["체류지", "머무는 곳"], ["체크 보드", "기록판"], ["초도 순시", "첫 방문, 첫 둘러보기"], ["초두", "첫머리, 애초"], ["촉수 엄금", "손대지 마십시오"], ["최번 시", "가장 바쁠 때"], ["최전열", "맨 앞줄"], ["최촉하다", "재촉하다, 독촉하다"], ["추곡 수매가", "벼 사들이는 값"], ["추완", "추가 보완"], ["출계자", "양자 간 아들"], ["출원", "원서 제출, 원서 냄, 청원"], ["취명하다", "울리다"], ["층고", "층높이"], ["치잠", "애누에, 어린누에"], ["카드 리더", "카드 판독기"], ["카운슬러", "상담사, 길잡이"], ["카운슬링", "상담"], ["카운터", "계산대"], ["카테고리", "범주, 갈래"], ["카풀/카풀제", "승용차 함께 타기"], ["캐비아", "철갑상어알"], ["캐시카드", "현금카드"], ["캐치프레이즈", "구호"], ["캘린더", "달력"], ["캡처", "갈무리, 장면 갈무리, 화면 담기"], ["커리어우먼", "전문직여성"], ["커뮤니케이션", "소통"], ["커미션", "수수료, 구전"], ["커버", "덮개, 가리개, 씌우개"], ["컨버전", "변환"], ["컨소시엄", "연합체"], ["컨펌", "확인, 확정"], ["컴프레서", "① 압축기, 압착기, ② 강우기"], ["코너", "① 구석, 모퉁이, 구역, ② 쪽,\n③ 꼭지(방송 프로그램 용어)"], ["코멘트 자료", "설명 자료"], ["코스트", "비용"], ["쿼터제", "할당제, 의무 할당제, 의무 배당제"], ["크랙", "균열, 갈라짐"], ["크레디트카드", "신용카드"], ["키", "열쇠"], ["키오스크", "① 무인안내기, 무인 단말기, ② 간이\n판매대, 간이 매장"], ["키포인트", "요점, 핵심"], ["타깃", "과녁, 표적, 목표"], ["타액", "침"], ["타월", "수건"], ["타이틀", "제목, 표제"], ["타이핑", "타자"], ["타임 래그", "시차"], ["타임 테이블", "시간표"], ["타입", "① 모양, ② 유형"], ["턴키 공사", "일괄 공사"], ["테마", "주제"], ["테이블 다이어리", "탁상일기"], ["테이블 세팅", "상차림"], ["테크닉", "기교, 기술, 솜씨"], ["텔레마케팅", "전화판매, 통신판매"], ["템포", "속도, 박자"], ["토괴", "흙덩이"], ["토사도", "흙길"], ["톨게이트", "요금소"], ["톱클래스", "정상급"], ["투어콘서트", "순회공연"], ["투잡", "겹벌이, 겸업"], ["트레이닝복", "운동복"], ["티오", "정원"], ["티케팅", "① 표사기, 표팔기, 표사고팔기,\n② 검표, 표검사"], ["티켓", "표"], ["파울", "반칙"], ["파워", "힘, 권력"], ["파워 게임", "권력 다툼, 세력 다툼"], ["파일럿", "조종사, 뱃길잡이"], ["파출 검사", "출장 검사"], ["파출 수납", "출장 수납"], ["파트너십", "동반 관계"], ["파트타임", "시간제근무"], ["패널", "토론자"], ["패러독스", "역설"], ["퍼포먼스 예술", "행위예술"], ["편린", "일면, 한 단면, 조각"], ["편평족", "편발, 편평발, 평발"], ["폐치 분합/폐합", "없애고 합침"], ["포락지", "무너진 곳"], ["포말 소화기", "거품 소화기"], ["포커스", "초점"], ["포태", "임신, 새끼배기"], ["표찰", "① 이름표, ② 표지판"], ["프라이버시", "사생활"], ["프라임 레이트", "우대 금리"], ["플라자", "① 광장, ② 상가"], ["플래카드", "펼침막, 현수막"], ["피견인차", "끌려가는 차"], ["피날레", "마지막"], ["피니시", "끝"], ["피맥", "겉보리"], ["피아르", "홍보"], ["피혁", "가죽"], ["픽션", "허구"], ["핀트", "초점"], ["필경", "마침내"], ["필연대", "기록대, 쓰는 곳"], ["필한 자", "마친 사람"], ["하구언", "강어귓둑, 강어귀의 둑"], ["하기", "아래, 다음"], ["하대두", "여름콩"], ["하도부", "보냄 장부"], ["하이웨이", "고속도로"], ["하이테크", "첨단기술"], ["핫이슈", "주요 쟁점"], ["해촉", "위촉 해제, 위촉을 끝냄, 맡김을 끝냄"], ["행락철", "나들이철"], ["헤게모니", "주도권"], ["헬멧", "안전모"], ["협조전", "협조문"], ["협착", "① 끼워 붙이기, ② 좁음, 끼임"], ["화물 적하", "짐 내리기, 짐 부림"], ["확행 바랍니다", "꼭 하시기 바랍니다"], ["환금 작물", "수익 작물, 돈벌이 작물"], ["환시산표", "환검산표"], ["회납금", "반납금"], ["회보하다", "알려 주다"], ["회시하다", "회답하다"], ["횡서", "가로쓰기"], ["휴반 소각", "두렁태우기"], ["흉고 직경", "가슴높이 지름"], ["흉골", "앞가슴뼈"], ["흉위", "가슴둘레"], ["가건물", "임시 건물"], ["가건축", "임시 건축"], ["가검물", "검사 대상물"], ["가결의", "임시 결의"], ["가계약", "임시 계약"], ["가계정", "임시 계정"], ["가도", "임시 도로"], ["가부 동수", "찬반 동수"], ["가사용", "임시 사용"], ["가설무대", "임시 무대"], ["가이드", "① 안내자, 안내원, 길잡이,\n② 지침서, 안내서, 길잡이"], ["가이드라인", "지침, 방침"], ["가이드북", "안내서, 지침서"], ["간선도로", "주요 도로, 중심 도로"], ["개찰구", "표 내는 곳"], ["개토", "땅파기"], ["거래선", "거래처"], ["건폐율", "건물 비율, 건평률"], ["계리", "회계 처리"], ["고수부지", "둔치"], ["고저", "높낮이"], ["과당 경쟁", "과열 경쟁, 지나친 경쟁"], ["관유물", "공공기관의 물건"], ["교면 포장", "교량 포장, 다리 포장"], ["구배", "① 기울기, ② 물매, 비탈, 오르막"], ["구휼", "구호, 구제"], ["국지", "일부 지역"], ["굴토", "땅파기"], ["그린벨트", "개발제한구역"], ["그린웨이", "녹색길, 보행자·자전거 전용 도로,\n산책로, 산책길"], ["그린카", "친환경차"], ["글로벌 스탠더드", "국제 표준"], ["금일", "오늘"], ["난굴", "마구 파냄"], ["내비게이션", "길도우미, 길안내기"], ["내역서", "명세서"], ["네트워크/네트워킹", "연결망, 연계망, 관계망"], ["네티즌", "누리꾼"], ["노미네이트", "후보 지명"], ["노하우", "비법, 기술, 비결"], ["노후 시설/\n노후한 시설", "낡은 시설"], ["뉴스레터", "소식지"], ["닉네임", "별명"], ["다운사이징", "감축, 축소, 줄이기"], ["단차", "높낮이 차이"], ["답보", "제자리걸음"], ["당년", "올해, 그해"], ["당월", "이번 달, 그달"], ["당일", "오늘, 그날"], ["대사", "대조 확인"], ["대조 공부", "장부 확인, 장부 대조"], ["대합실", "맞이방"], ["더치페이", "각자내기, 추렴"], ["도장 공사", "칠 공사, 도색 공사"], ["독거노인", "홀로노인, 홀로 사는 노인, 홀몸노인"], ["동법", "① 같은 법, ② 같은 방법, 같은 수법"], ["동절기", "겨울철"], ["드레싱", "① 맛깔장, ② 상처 치료, 상처 치료약"], ["디브레인", "디지털 예산 회계 시스템"], ["디아이와이", "손수 짜기, 직접 만들기, 손수 제작"], ["디엠", "우편 광고, 우편 광고물"], ["디지털포렌식", "전자법의학"], ["라이브러리", "자료관, 도서관"], ["라이선스", "사용권, 면허, 면허장, 허가, 허가장"], ["랜드마크", "마루지"], ["러브 라인", "사랑 구도"], ["레저", "여가"], ["로고", "상징"], ["로고송", "상징 노래"], ["로드 무비", "여정 영화"], ["로드맵", "이행안, 단계별 이행안"], ["로드쇼", "홍보 마당"], ["로드킬", "동물 찻길 사고, 동물, 교통사고"], ["루머", "소문, 뜬소문"], ["루미나리아", "① 불빛축제, 불빛잔치, ② 불빛시설"], ["룸메이트", "방짝, 방친구"], ["리더십", "지도력"], ["리드미컬하다", "율동적이다"], ["리메이크", "원작 재구성"], ["리빙룸", "거실"], ["리콜", "① 결함 보상, 결함 보상제,\n② 불러들임"], ["리폼", "개량, 수선"], ["마리나", "해안유원지"], ["마블링", "결지방"], ["마스터클래스", "명인 강좌"], ["마이너스", "① 적자, 빼기, 모자람, 손해,\n② 음극, ③ 음성"], ["마일리지", "이용 실적 점수, 이용 실적"], ["마케팅", "① 광고, 홍보, ② 시장 거래, 시장\n관리, ③ 영업, 판매"], ["마켓", "시장"], ["마크맨", "전담 요원"], ["매너리즘", "타성"], ["매뉴얼", "설명서, 안내서, 지침"], ["매점매석", "사재기"], ["매치업", "맞대결"], ["매칭그랜트", "동반 기부"], ["매칭펀드", "대응 투자금"], ["매표소", "표 사는 곳"], ["맹지", "배후 토지, 도로 없는 땅"], ["머스트해브", "필수품"], ["멀티미디어", "다중 매체, 복합 매체"], ["메디컬 비자", "의료 비자, 의료 사증"], ["메디컬 콜 센터", "전화 의료 상담실"], ["메신저", "쪽지창"], ["메카", "중심, 중심지"], ["멘토", "조언자, 인생길잡이"], ["멘토링", "① 지도, ② 조언, ③ 상담, ④ 후원"], ["멜로디", "가락"], ["명일", "내일"], ["모니터링", "점검, 관찰, 감시, 살피기"], ["모바일", "① 이동, 이동식, ② 이동통신"], ["모티켓", "통신 예절"], ["모티프/모티브", "동기"], ["몽리 면적", "수혜 면적, 수혜 넓이, 수혜 지역"], ["무빙워크", "자동길"], ["미디어", "매체"], ["미션", "중요 임무, 임무"], ["바비큐", "통구이"], ["바우처", "상품권, 이용권"], ["바인더", "① 보관철, 묶음, ② 조임틀, 죔틀"], ["박스 오피스", "흥행 수익"], ["반도핑", "약물 복용 반대, 약물 주사 반대"], ["방침을 득하여", "방침을 받아"], ["배너", "막대 광고, 띠 광고, 현수막 광고"], ["버블", "① 거품, ② 거품 현상"], ["버전", "판"], ["버튼", "단추, 누름쇠"], ["보드마커", "칠판펜"], ["보디라인", "체형"], ["보이스피싱", "사기 전화"], ["보텀업", "상향식"], ["복토", "흙덮기"], ["불비한", "갖추어지지 않은"], ["불요불급한", "급하지 않은, 당장 필요하지 않은"], ["불철주야", "밤낮없이"], ["불출", "내줌, 치러 줌"], ["뷰파인더", "보기창"], ["브랜드 아이덴티티", "① 상표 정체성, ② 상표 일체감"], ["브랜드 파워", "상표 경쟁력"], ["브랜드화", "상표화"], ["브랜딩 C.I.", "기업 이미지 상표화"], ["브로마이드", "벽붙이사진"], ["브로슈어", "안내서"], ["블록", "구역"], ["비전", "① 전망, ② 이상"], ["비즈니스\n네트워킹 허브", "사업 연계 중심, 업무 연계 중심"], ["비즈니스 데스크", "① 사업부서, ② 사업부서장"], ["사이버", "가상공간"], ["사토", "모래흙"], ["상기", "위, 위의"], ["상기한 바와 같이", "위와 같이"], ["상당액", "① 해당 금액, ② 많은 금액"], ["상존", "① 남아 있음, ② 늘 있음"], ["샐러리맨", "봉급생활자, 급여생활자"], ["샘플링", "표본추출"], ["생계비", "생활비"], ["석식", "저녁밥, 저녁 식사, 저녁"], ["선루프", "지붕창"], ["선팅", "빛가림"], ["세계잉여금", "결산 잔액"], ["세미나", "발표회, 토론회, 연구회"], ["세일", "할인판매"], ["세트 피스", "맞춤전술"], ["센서스", "총조사"], ["소맥피", "밀기울"], ["소셜 네트워크\n서비스/SNS", "① 누리소통망, ② 누리소통망 서비스"], ["소요", "필요"], ["소정 양식", "규정 서식"], ["쇼케이스", "시험 공연, 선보임 공연"], ["수범 사례", "모범 사례, 잘된 사례"], ["수취인", "받는 이, 받는 사람"], ["스마트워크", "원격 근무"], ["스카이라운지", "전망쉼터, 하늘쉼터"], ["스캔들", "추문, 뒷소문"], ["스케줄", "일정, 계획표"], ["스크랩", "자료 모음, 오려두기, 오려 모으기"], ["스크린", "화면"], ["스크린도어", "안전문"], ["스타일리스트", "맵시가꿈이"], ["스타팅멤버", "선발 선수, 앞장 선수"], ["스터디그룹", "공부 모임, 공부 모둠"], ["스토리", "이야기"], ["스토리보드", "줄거리판"], ["스토리텔링", "이야기하기, 이야기 나누기"], ["스폰서", "① 광고주, 광고 의뢰자, ② 후원자"], ["스폿광고", "반짝 광고, 중간 광고"], ["스프레이", "분무기"], ["승강장", "타는 곳"], ["시너지", "① 상승, ② 동반 상승"], ["시운전", "시험 운전"], ["신분증 패용", "신분증 달기"], ["실링", "최고 한도액, 최고 한도, 한도액, 상한"], ["실버시터", "어르신도우미, 경로도우미"], ["심벌마크", "상징표시, 상징표"], ["아우라", "기품"], ["아웃소싱", "외부 용역, 외주"], ["아이콘", "① 상징, 상징물, ② 그림 단추"], ["아이피티브이", "맞춤형 누리 텔레비전"], ["아카이브", "① 자료 보관소, 자료 저장소, 기록\n보관, ② 자료 전산화"], ["아킬레스건", "치명적 약점"], ["아트 마켓", "예술 시장"], ["아트 페스티벌", "예술 축전"], ["아티스트", "예술가"], ["어시스트", "도움"], ["언더패스", "아래찻길"], ["언론 플레이", "여론몰이"], ["에스오에스", "구원 요청"], ["에스컬레이터", "자동계단"], ["에어라이트", "① 풍선 광고, ② 기둥풍선 입간판,\n풍선형 입간판, 풍선 입간판"], ["에이전트", "대리인, 대행인"], ["엔딩 크레딧", "끝자막, 맺음자막"], ["엘리트", "정예"], ["연대채무", "함께 갚을 채무, 줄보증"], ["연와조", "벽돌 구조"], ["엽연초", "잎담배"], ["영조물", "① 공공시설물, ② 건축물, ③ 시설물"], ["예수금", "임시 받은 금액"], ["예탁금", "임시 맡긴 금액, 미리 맡긴 금액"], ["오일볼", "기름 뭉치"], ["오일쇼크", "석유 파동"], ["오토프로그램", "자동 프로그램"], ["오프너", "병따개"], ["오프라인", "현실공간"], ["올인", "① 다걸기, ② 집중"], ["옵션", "선택, 선택 사항"], ["워밍업", "준비 운동, 준비"], ["워크숍", "연수회, 수련회"], ["워킹맘", "직장엄마"], ["월드 뮤직 페스티벌", "세계 음악 축전, 세계 음악 축제"], ["웨딩플래너", "결혼도우미"], ["웹서핑", "웹 검색, 누리 검색, 인터넷 검색"], ["유관 기관", "관계 기관"], ["유비쿼터스", "두루누리"], ["유시시", "손수제작물, 개인제작물"], ["유어행위", "낚시"], ["유어행위 금지", "낚시 금지"], ["유인물", "인쇄물"], ["유저", "사용자"], ["유찰", "입찰 무효, 낙찰 무효"], ["육묘", "모기르기"], ["육우", "고기소"], ["이모티콘", "그림말"], ["이벤트", "① 기획 행사, 행사, ② 사건"], ["이슈", "쟁점, 문젯거리"], ["이호조", "지방재정시스템"], ["인센티브", "① 특전, 성과급, ② 유인책"], ["인스턴트식품", "즉석식품, 즉석 먹거리, 즉석 먹을거리"], ["인우", "지인, 이웃"], ["인터랙티브", "① 쌍방향, 양방향, ② 대화식"], ["인테리어", "실내 장식"], ["일괄하여", "한꺼번에, 몰아서"], ["일시 차입금", "잠시 빌린 돈"], ["일실치 않도록", "놓치지 않도록, 잃지 않도록"], ["일용잡급", "일용직"], ["일할 계산", "날짜 계산, 날수 계산"], ["잔임 기간", "남은 임기"], ["잔존 기간", "남은 기간"], ["저널리즘", "언론"], ["저류조", "물저장시설"], ["전수", "모두"], ["절사", "끊어 버림, 잘라 버림"], ["점용 허가", "점거 사용 허가"], ["접속 도로", "연결 도로"], ["정수 처분", "급수 정지 처분"], ["제 규정", "여러 규정, 모든 규정"], ["제 수당", "여러 수당, 모든 수당"], ["제로베이스", "백지상태, 원점"], ["제반 요인", "여러 요인, 모든 요인"], ["제연경계벽", "연기 차단벽"], ["제척", "제외, 뺌"], ["조류 인플루엔자", "조류 독감"], ["조식", "아침밥, 아침 식사, 아침"], ["중식", "점심밥, 점심 식사, 점심"], ["집수정", "물 저장고, 물 모이"], ["집진 시설", "먼지 제거 장치, 먼지 제거 시설"], ["집하", "수집, 모음"], ["징구", "걷기, 거두기, 청구"], ["차면 시설", "가리개, 가림시설"], ["차폐", "가림"], ["찬스", "기회"], ["채널", "① 경로, 통로, ② 텔레비전 번호"], ["천공", "구멍 뚫기"], ["첨부 서류", "붙임 서류"], ["체인", "① 배급망, ② 연쇄 사슬"], ["체크리스트", "점검표"], ["출감", "출소"], ["카시트", "아이안전의자, 안전의자"], ["카운트다운", "초읽기"], ["캐스팅보트", "결정권, 결정표"], ["캠프파이어", "모닥불놀이"], ["커플룩", "짝꿍차림"], ["컨디션", "① 조건, ② 상태"], ["컨설팅", "상담, 자문"], ["케이스", "① 경우, ② 상자"], ["코드", "① 부호, ② 성향"], ["코르사주", "맵시꽃, 옷 장식꽃"], ["코칭 과학", "지도 과학"], ["콘셉트", "① 개념, ② 설정"], ["콘텐츠어워드", "콘텐츠 상, 꾸림정보 상"], ["콘퍼런스", "회의"], ["쿠폰", "① 교환권, ② 이용권, ③ 할인권"], ["큐레이터", "전시기획자"], ["타운하우스", "공동전원주택"], ["타이틀곡", "주제곡"], ["타임 서비스", "반짝할인"], ["타임캡슐", "기억상자"], ["태스크포스/\n태스크포스팀", "특별 전담 조직, 전담 조직, 특별팀"], ["턴키 발주", "일괄 발주, 일괄 주문"], ["테스터", "체험평가자"], ["테이블 클로스", "식탁보"], ["템플릿", "서식"], ["토털", "합계, 총계"], ["톱다운", "하향식"], ["통로암거", "지하 통로"], ["투어", "관광여행"], ["트랜스 지방", "변이지방"], ["트레일", "탐방로"], ["팁", "① 도움말, ② 봉사료"], ["파일", "서류철, 서류묶음"], ["파일럿 프로그램", "맛보기 프로그램"], ["파트", "부분, 일부"], ["파트너", "동반자"], ["팝업창", "알림창"], ["패딩", "누비옷"], ["패셔니스타", "맵시꾼"], ["패키지 디자인", "묶음 디자인, 꾸러미 디자인"], ["패키지 상품", "① 꾸러미 상품, ② 기획 상품"], ["팩스/팩시밀리", "전송"], ["팸투어", "사전 답사 여행, 홍보 여행, 초청\n홍보 여행"], ["퍼블리시티권", "초상 사용권, 초상권"], ["펀드", "기금, 자금"], ["페스티벌", "축전, 축제"], ["펜네임", "필명"], ["포럼", "토론회, 공개 토론회"], ["포맷", "양식, 서식, 형식"], ["포스트잇", "붙임쪽지"], ["포토존", "사진 촬영 구역, 촬영 구역, 사진\n찍는 곳"], ["풀 세트", "다 모음, 온벌"], ["프라임 시간대", "황금 시간대, 주시청시간대"], ["프러포즈", "제안, 구애, 청혼"], ["프레 콘서트", "사전 공연, 사전 연주회"], ["프레젠테이션", "① 시청각 설명, ② 시청각 설명회"], ["프로슈머", "참여형 소비자"], ["프로필", "인물 소개, 약력"], ["플라모델", "조립 모형, 조립장난감"], ["플리 바기닝", "자백감형제, 자백감형제도"], ["피엘상품", "자체 기획 상품"], ["피켓", "팻말, 손팻말"], ["피크 기간", "집중 기간"], ["하이파이브", "손뼉맞장구"], ["하절기", "여름철"], ["하중", "① 짐무게, ② 부담"], ["해태하다", "게을리하다, 제때 하지 않다"], ["핸드폰/휴대폰", "휴대전화, 손전화"], ["핸드프린팅", "기념손찍기"], ["호안", "기슭 보호, 둑 보호"], ["호우", "큰비"], ["홈스테이", "가정 체험, 가정집묵기"], ["홈헬퍼", "가사도우미, 가정도우미"], ["확폭", "폭 넓히기"], ["환가", "가치 환산, 값어치, 환산 가액, 환산\n값어치"], ["횡풍 주의", "옆바람 주의"], ["휘핑 크림", "거품크림"], ["휴테크", "여가 활용 기술"], ["~ 게이트", "~ 의혹사건"], ["Job Networking", "일 연계망 형성, 일자리 연계망 형성"], ["OA", "사무자동화"], ["OS", "운영체계, 운영체제"], ["R&D", "연구 개발"], ["RFID", "전파 식별"], ["SOC", "① 사회 기반 시설, ② 사회 간접\n자본"], ["VOD", "① 다시보기, ② 주문형 비디오"]];
+function hasFinalConsonant(word) {
+  if (!word) return false;
+  // 괄호 안내문 등이 있을 경우 앞부분 실제 단어 기준
+  const clean = word.replace(/\(.*?\)/g, '').trim();
+  if (!clean) return false;
+  const lastChar = clean[clean.length - 1];
+  const code = lastChar.charCodeAt(0);
+
+  // 한글 음절 범위 (가 ~ 힣)
+  if (code >= 0xAC00 && code <= 0xD7A3) {
+    const jongseong = (code - 0xAC00) % 28;
+    return jongseong !== 0; // 0이면 받침 없음, 1~27이면 받침 있음 (ㄹ=8 포함)
+  }
+  // 숫자 끝자리 판별 (0,1,3,6,7,8 -> 받침 있음 / 2,4,5,9 -> 받침 없음)
+  if (/[0-9]/.test(lastChar)) {
+    return ['0', '1', '3', '6', '7', '8'].includes(lastChar);
+  }
+  return false;
+}
+
+// '으로/로'는 ㄹ 받침일 때 '로'를 써야 하므로 별도 판별
+function isRieulFinal(word) {
+  const clean = word.replace(/\(.*?\)/g, '').trim();
+  if (!clean) return false;
+  const lastChar = clean[clean.length - 1];
+  const code = lastChar.charCodeAt(0);
+  if (code >= 0xAC00 && code <= 0xD7A3) {
+    return ((code - 0xAC00) % 28) === 8; // 종성 8번 = ㄹ
+  }
+  if (/[0-9]/.test(lastChar)) {
+    return ['1', '7', '8'].includes(lastChar); // 일, 칠, 팔
+  }
+  return false;
+}
+
+// replacementWord 뒤에 바로 붙는 텍스트(afterText)의 첫머리가 조사인 경우 교정
+function adjustFollowingParticle(replacementWord, afterText) {
+  if (!afterText || !replacementWord) return { particle: '', rest: afterText };
+
+  const hasBatchim = hasFinalConsonant(replacementWord);
+  const hasRieul = isRieulFinal(replacementWord);
+
+  // 긴 복합 조사부터 먼저 체크 (예: '으로는', '에서는' 등)
+  const rules = [
+    // 으로 / 로
+    {
+      pattern: /^(으로는|로써|로서|으로|로)(?=[\s.,!?;:'"\)\]]|$)/,
+      fix: (m) => {
+        const suffix = m.replace(/^(으로|로)/, '');
+        const base = (!hasBatchim || hasRieul) ? '로' : '으로';
+        return base + suffix;
+      }
+    },
+    // 을 / 를
+    {
+      pattern: /^(을|를)(?=[\s.,!?;:'"\)\]]|$)/,
+      fix: () => hasBatchim ? '을' : '를'
+    },
+    // 이 / 가
+    {
+      pattern: /^(이|가)(?=[\s.,!?;:'"\)\]]|$)/,
+      fix: () => hasBatchim ? '이' : '가'
+    },
+    // 은 / 는
+    {
+      pattern: /^(은|는)(?=[\s.,!?;:'"\)\]]|$)/,
+      fix: () => hasBatchim ? '은' : '는'
+    },
+    // 과 / 와
+    {
+      pattern: /^(과|와)(?=[\s.,!?;:'"\)\]]|$)/,
+      fix: () => hasBatchim ? '과' : '와'
+    },
+    // 이라 / 라, 이라고 / 라고, 이라는 / 라는, 이라면 / 라면, 이라도 / 라도
+    {
+      pattern: /^(이라고|라고|이라는|라는|이라면|라면|이라도|라도|이라|라)(?=[\s.,!?;:'"\)\]]|$)/,
+      fix: (m) => {
+        const base = m.replace(/^이/, '');
+        return hasBatchim ? '이' + base : base;
+      }
+    },
+    // 이야 / 야, 이여 / 여
+    {
+      pattern: /^(이야|야|이여|여)(?=[\s.,!?;:'"\)\]]|$)/,
+      fix: (m) => {
+        const base = m.replace(/^이/, '');
+        return hasBatchim ? '이' + base : base;
+      }
+    }
+  ];
+
+  for (const rule of rules) {
+    const match = afterText.match(rule.pattern);
+    if (match) {
+      const origParticle = match[1];
+      const fixedParticle = rule.fix(origParticle);
+      return {
+        particle: fixedParticle,
+        rest: afterText.slice(origParticle.length)
+      };
+    }
+  }
+
+  return { particle: '', rest: afterText };
+}
+
+const $ = id => document.getElementById(id);
+const storageKey = 'admin-language-editor-settings-v1';
+let settings = { imported: null, custom: [], exceptions: [] };
+try {
+  const stored = JSON.parse(localStorage.getItem(storageKey));
+  if (stored) settings = { ...settings, ...stored };
+} catch {}
+let dictionary = new Map();
+let segments = [];
+let dirty = false;
+let analyzedMode = 'press';
+
+function status(message) { $('status').textContent = message; }
+
+function saveSettings() {
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(settings));
+    return '다음에 이 브라우저에서 다시 열면 설정이 유지됩니다.';
+  } catch {
+    return '이 브라우저에서 설정을 저장할 수 없어 열린 창에만 적용했습니다.';
+  }
+}
+
+function element(tag, text, className) {
+  const node = document.createElement(tag);
+  node.textContent = text;
+  if (className) node.className = className;
+  return node;
+}
+
+function escapeRegex(text) { return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+function updateDictionary() {
+  dictionary = new Map();
+  const base = settings.imported || DEFAULT_DICTIONARY;
+  for (const [raw, replacement] of base) {
+    const candidates = replacement.replace(/[①②③④⑤⑥⑦⑧⑨⑩]/g, '').split(/[,，](?![^()]*\))/).map(value => value.trim()).filter(Boolean);
+    for (const term of raw.split('/').map(value => value.trim().replace(/^~\s*/, '')).filter(Boolean)) {
+      const previous = dictionary.get(term)?.candidates || [];
+      if (candidates.length) dictionary.set(term, { candidates: [...new Set([...previous, ...candidates])], custom: false });
+    }
+  }
+  for (const [term, replacement] of settings.custom) {
+    const previous = dictionary.get(term)?.candidates || [];
+    dictionary.set(term, { candidates: [...new Set([replacement, ...previous])], custom: true });
+  }
+  $('dictionaryCount').textContent = (settings.imported ? '불러온 사전 ' : '기본 사전 ') + base.length + '개 · 사용자 ' + settings.custom.length + '개';
+  renderLookup();
+  renderEntries();
+}
+
+function renderLookup() {
+  const query = $('lookup').value.trim().toLowerCase();
+  const visible = [...dictionary].filter(([term, record]) =>
+    term.toLowerCase().includes(query) || record.candidates.some(value => value.toLowerCase().includes(query)));
+  $('dictResults').replaceChildren(element('small', visible.length ? '검색 결과 ' + visible.length + '개 중 최대 50개 표시' : '검색 결과가 없습니다.'));
+  for (const [term, record] of visible.slice(0, 50)) {
+    $('dictResults').append(element('div', term + ' → ' + record.candidates.join(' / ')));
+  }
+}
+
+function renderEntries() {
+  $('entries').replaceChildren();
+  for (const [key, heading] of [['custom', '사용자 순화어'], ['exceptions', '예외 표현']]) {
+    $('entries').append(element('strong', heading));
+    if (!settings[key].length) $('entries').append(element('div', '등록된 항목이 없습니다.', 'note'));
+    settings[key].forEach((value, index) => {
+      const row = element('div', key === 'custom' ? value.join(' → ') : value, 'row entry');
+      const remove = element('button', '삭제');
+      remove.addEventListener('click', () => {
+        settings[key].splice(index, 1);
+        settingsChanged();
+      });
+      row.append(remove);
+      $('entries').append(row);
+    });
+  }
+}
+
+function settingsChanged() {
+  updateDictionary();
+  const storedMessage = saveSettings();
+  status(storedMessage + (segments.length ? ' 새 설정은 다시 검사할 때 반영됩니다.' : ''));
+}
+
+function protectedRanges(source, mode) {
+  const ranges = [];
+  const add = (expression, reason, hard = true) => {
+    for (const match of source.matchAll(expression)) {
+      ranges.push({ start: match.index, end: match.index + match[0].length, reason, hard });
+    }
+  };
+  for (const value of settings.exceptions) add(new RegExp(escapeRegex(value), 'gu'), '등록한 예외 표현');
+  add(/https?:\/\/[^\s<>"'「」]+|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/gu, '웹 주소·이메일');
+  add(/\d{2,4}[.-]\s*\d{1,2}[.-]\s*\d{1,2}\.?|\d{2,4}년\s*\d{1,2}월(?:\s*\d{1,2}일)?|\d{1,2}월\s*\d{1,2}일|\d{1,2}:\d{2}|\d{1,2}시(?:\s*\d{1,2}분)?|\d{2,4}[- ]\d{3,4}[- ]\d{4}|\d{4}-\d{4}|(?:₩\s*)?\d[\d,.]*\s*(?:억\s*원|만\s*원|천\s*원|원|%|명|세)|제\s*\d+\s*(?:조(?:의\s*\d+)?|항|호)/gu, '날짜·금액·연락처·조항 등');
+  add(/「[^」\n]+」|『[^』\n]+』/gu, '법령·문서 제목 표기');
+  if (mode === 'notice') {
+    add(/^\s*(?:(?:공고|사업|서식|법령)명|(?:접수|신청|모집)\s*기간|문\s*의(?:처)?)\s*[:：][^\n]+/gmu, '공고문 주요 항목');
+    add(/\[(?:별지|붙임|서식)[^\]\n]*\]|‘[^’\n]+’|“[^”\n]+”/gu, '공식 명칭 또는 인용 가능성', false);
+    add(/^[^\n]{1,100}(?:공고|공고문|계획|모집 안내)[ \t]*$/gmu, '공고 제목 가능성', false);
+  }
+  return ranges;
+}
+
+const wordChar = /[\p{L}\p{N}_]/u;
+const suffixPattern = /^(?:으로부터|으로서는|으로써|으로서|으로는|로부터|로서는|로써|로서|로는|으로|로|에게서|에게는|에게|에서는|에서도|에서|에는|에도|에|한테|까지|부터|처럼|밖에|보다|만|도|의|은|는|이|가|을|를|과|와|이라고|라고|이라는|라는|이라면|라면|이라도|라도|이라|라|이야|야|이여|여|입니다|이다)(?![\p{L}\p{N}_])/u;
+const grammarBoundary = /^(?:으로는|로는|으로서|로서|으로써|로써|으로|로)(?![\p{L}\p{N}_])/u;
+
+function adjusted(word, suffix) {
+  const direction = suffix.match(grammarBoundary);
+  if (direction) return ((!hasFinalConsonant(word) || isRieulFinal(word)) ? '로' : '으로') + suffix.replace(/^(으로|로)/, '');
+  return adjustFollowingParticle(word, suffix).particle || suffix;
+}
+
+function analyze() {
+  const source = $('source').value;
+  if (!source.trim()) return status('검사할 원문을 입력하세요.');
+  if (dirty && !window.confirm('다시 검사하면 현재 수정안과 적용 선택을 새로 만듭니다. 계속할까요?')) return;
+  analyzedMode = $('mode').value;
+  const ranges = protectedRanges(source, analyzedMode);
+  const terms = [...dictionary.keys()].sort((a, b) => b.length - a.length).map(escapeRegex);
+  const pattern = terms.length ? new RegExp('(?=(' + terms.join('|') + '))', 'gu') : /(?!) /g;
+  segments = [];
+  let cursor = 0;
+  for (const match of source.matchAll(pattern)) {
+    const start = match.index;
+    const term = match[1];
+    const end = start + term.length;
+    if (start < cursor || wordChar.test(source[start - 1] || '')) continue;
+    const suffix = source.slice(end).match(suffixPattern)?.[0] || '';
+    if (!suffix && wordChar.test(source[end] || '')) continue;
+    const overlaps = ranges.filter(range => range.start < end + suffix.length && start < range.end);
+    const hard = overlaps.find(range => range.hard);
+    const record = dictionary.get(term);
+    const verify = hard?.reason || overlaps[0]?.reason || (record.candidates.length > 1 ? '문맥에 따라 대체어 선택' : '');
+    if (start > cursor) segments.push({ text: source.slice(cursor, start) });
+    const lineStart = source.lastIndexOf('\n', start - 1) + 1;
+    const lineEnd = source.indexOf('\n', end);
+    segments.push({
+      term, suffix, start, hard: Boolean(hard), verify, custom: record.custom,
+      context: source.slice(lineStart, lineEnd < 0 ? source.length : lineEnd),
+      candidates: record.candidates, choice: record.candidates[0], applied: false
+    });
+    cursor = end + suffix.length;
+  }
+  if (cursor < source.length) segments.push({ text: source.slice(cursor) });
+  dirty = false;
+  $('source').hidden = true;
+  $('comparison').hidden = false;
+  $('editSource').hidden = false;
+  $('copy').disabled = false;
+  renderDocuments();
+  renderSuggestions();
+  renderReadability();
+  const matches = segments.filter(part => part.term);
+  status('검사 완료 · 순화 후보 ' + matches.filter(part => !part.hard).length + '곳 · 보호 ' + matches.filter(part => part.hard).length + '곳');
+}
+
+function valueOf(part) {
+  if (!part.term) return part.text;
+  return part.applied ? part.choice + adjusted(part.choice, part.suffix) : part.term + part.suffix;
+}
+
+function matchClass(part) {
+  return part.hard ? 'protected' : part.applied ? 'applied' : '';
+}
+
+function renderDocuments() {
+  $('comparison').replaceChildren();
+  $('result').replaceChildren();
+  for (const part of segments) {
+    if (!part.term) {
+      $('comparison').append(document.createTextNode(part.original ?? part.text));
+      const editor = element('span', part.text, 'edit');
+      editor.contentEditable = 'plaintext-only';
+      editor.setAttribute('aria-label', '수정안의 일반 문구');
+      editor.addEventListener('input', () => {
+        part.original ??= part.text;
+        part.text = editor.innerText.replace(/\r\n/g, '\n');
+        dirty = true;
+        renderReadability();
+      });
+      $('result').append(editor);
+      continue;
+    }
+    $('comparison').append(element('mark', part.term + part.suffix, matchClass(part)));
+    $('result').append(element('mark', valueOf(part), matchClass(part)));
+  }
+}
+
+function renderSuggestions() {
+  const list = $('suggestions');
+  list.replaceChildren();
+  const matches = segments.filter(part => part.term);
+  if (!matches.length) list.append(element('p', segments.length ? '검출된 사전 용어가 없습니다.' : '원문을 검사하면 이곳에 표시됩니다.'));
+  for (const part of matches) {
+    const card = element('article', '', 'card');
+    const heading = element('div', '', 'row');
+    heading.append(element('strong', part.term), element('span',
+      part.hard ? '보호 · ' + part.verify : part.verify ? '검토 필요 · ' + part.verify : part.custom ? '사용자 사전' : '기본·불러온 사전', 'badge'));
+    card.append(heading, element('p', part.context));
+    if (!part.hard) {
+      const row = element('div', '', 'row');
+      const choice = document.createElement('select');
+      choice.setAttribute('aria-label', part.term + ' 순화어');
+      for (const candidate of part.candidates) choice.append(new Option(candidate, candidate));
+      if (!part.candidates.includes(part.choice)) choice.append(new Option(part.choice, part.choice));
+      choice.value = part.choice;
+      const manual = document.createElement('input');
+      manual.value = part.choice;
+      manual.setAttribute('aria-label', part.term + ' 대체어 직접 수정');
+      const apply = element('button', part.applied ? '적용 중' : '적용');
+      const keep = element('button', '원문 유지');
+      apply.setAttribute('aria-pressed', String(part.applied));
+      apply.onclick = () => {
+        if (!manual.value.trim()) return status('적용할 표현을 입력하세요.');
+        part.choice = manual.value.trim();
+        changePart(part, true);
+      };
+      keep.onclick = () => changePart(part, false);
+      choice.onchange = () => {
+        manual.value = choice.value;
+        apply.textContent = '적용';
+      };
+      row.append(choice, manual, apply, keep);
+      card.append(row);
+    }
+    list.append(card);
+  }
+}
+
+function changePart(part, applied) {
+  part.applied = applied;
+  dirty = true;
+  renderDocuments();
+  renderSuggestions();
+  renderReadability();
+}
+
+function setAll(applied) {
+  const candidates = segments.filter(part => part.term && !part.hard && (!applied || !part.verify));
+  if (!candidates.length) return status('일괄 적용할 제안이 없습니다. 검토 필요 항목은 개별로 적용하세요.');
+  for (const part of candidates) part.applied = applied;
+  dirty = true;
+  renderDocuments();
+  renderSuggestions();
+  renderReadability();
+  status(candidates.length + (applied ? '곳에 순화어를 적용했습니다.' : '곳을 원문으로 되돌렸습니다.'));
+}
+
+function finalText() { return segments.map(valueOf).join(''); }
+
+function renderReadability() {
+  const panel = $('readability');
+  panel.replaceChildren();
+  const lines = finalText().split('\n');
+  let count = 0;
+  lines.forEach((line, index) => {
+    if (count >= 12) return;
+    const sentences = line.trim().split(/(?<=[.!?。])\s+(?=[가-힣A-Z])/u);
+    for (const sentence of sentences) {
+      if (sentence.length < 85 || count >= 12) continue;
+      count++;
+      const split = /(?:하고,?|으며,?|지만,?|한편,?|또한,?|다음과 같으며,?)\s+/u.exec(sentence.slice(25));
+      const card = element('article', '', 'card');
+      card.append(element('strong', (index + 1) + '번째 줄 · 긴 문장'));
+      if (split) {
+        const boundary = 25 + split.index + split[0].length;
+        card.append(element('p', sentence.slice(0, boundary).trimEnd() + '\n↳ ' + sentence.slice(boundary)));
+        card.append(element('small', '↳ 앞에서 문장을 나누고, 앞 문장의 끝맺음을 다듬어 보세요.'));
+      } else {
+        card.append(element('p', sentence), element('small', '안내 내용이나 조건이 달라지는 지점에서 문장을 나눠 보세요.'));
+      }
+      panel.append(card);
+    }
+  });
+  if (analyzedMode === 'notice') {
+    lines.forEach((line, index) => {
+      if (count >= 12) return;
+      const labels = [...line.matchAll(/(?:신청|접수|모집)\s*(?:대상|기간|방법)\s*[:：]/gu)];
+      if (labels.length < 2) return;
+      count++;
+      const card = element('article', '', 'card');
+      card.append(element('strong', (index + 1) + '번째 줄 · 신청 안내 분리'), element('p', line.replace(/\s*((?:신청|접수|모집)\s*(?:대상|기간|방법)\s*[:：])/gu, '\n$1').trim()), element('small', '각 항목을 한 줄씩 배치해 보세요.'));
+      panel.append(card);
+    });
+  }
+  if (!count) panel.append(element('p', segments.length ? '표시할 문장 다듬기 제안이 없습니다.' : '검사한 문서에서 긴 문장과 한 줄에 모인 신청 안내를 확인합니다.'));
+}
+
+function zipIndex(buffer) {
+  const view = new DataView(buffer);
+  const files = new Map();
+  let end = buffer.byteLength - 22;
+  const minimum = Math.max(0, end - 65535);
+  while (end >= minimum && (view.getUint32(end, true) !== 0x06054b50 ||
+    end + 22 + view.getUint16(end + 20, true) !== buffer.byteLength)) end--;
+  if (end < minimum) throw new Error('올바른 .xlsx 파일을 선택하세요.');
+  const count = view.getUint16(end + 10, true);
+  let offset = view.getUint32(end + 16, true);
+  const decoder = new TextDecoder();
+  for (let index = 0; index < count; index++) {
+    if (view.getUint32(offset, true) !== 0x02014b50) throw new Error('엑셀 파일 구조를 읽을 수 없습니다.');
+    const nameLength = view.getUint16(offset + 28, true);
+    const extra = view.getUint16(offset + 30, true);
+    const comment = view.getUint16(offset + 32, true);
+    const name = decoder.decode(new Uint8Array(buffer, offset + 46, nameLength));
+    files.set(name, {
+      method: view.getUint16(offset + 10, true),
+      compressed: view.getUint32(offset + 20, true),
+      size: view.getUint32(offset + 24, true),
+      start: view.getUint32(offset + 42, true)
+    });
+    offset += 46 + nameLength + extra + comment;
+  }
+  return async name => {
+    const file = files.get(name);
+    if (!file) return null;
+    if (file.size > 12 * 1024 * 1024) throw new Error('엑셀 시트가 너무 큽니다.');
+    const header = file.start;
+    if (view.getUint32(header, true) !== 0x04034b50) throw new Error('엑셀 파일이 손상되었습니다.');
+    const start = header + 30 + view.getUint16(header + 26, true) + view.getUint16(header + 28, true);
+    const bytes = new Uint8Array(buffer, start, file.compressed);
+    if (file.method === 0) return decoder.decode(bytes);
+    if (file.method !== 8 || typeof DecompressionStream === 'undefined') throw new Error('최신 Chrome 또는 Edge에서 엑셀을 불러오세요.');
+    const reader = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw')).getReader();
+    const chunks = [];
+    let length = 0;
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        length += value.length;
+        if (length > file.size) throw new Error('엑셀 파일이 손상되었습니다.');
+        chunks.push(value);
+      }
+    } finally {
+      await reader.cancel();
+    }
+    return new Blob(chunks).text();
+  };
+}
+
+function xmlDocument(content) {
+  if (!content) return null;
+  const doc = new DOMParser().parseFromString(content, 'application/xml');
+  if (doc.querySelector('parsererror')) throw new Error('엑셀 시트 내용을 읽을 수 없습니다.');
+  return doc;
+}
+
+function tags(node, name) { return [...(node?.getElementsByTagNameNS('*', name) || [])]; }
+function richText(node) { return tags(node, 't').filter(tag => tag.parentNode.localName !== 'rPh').map(tag => tag.textContent).join(''); }
+
+async function loadWorkbook(file) {
+  if (file.size > 12 * 1024 * 1024) throw new Error('12MB 이하의 엑셀 파일을 선택하세요.');
+  const read = zipIndex(await file.arrayBuffer());
+  const [book, relationships, shared] = await Promise.all(
+    ['xl/workbook.xml', 'xl/_rels/workbook.xml.rels', 'xl/sharedStrings.xml'].map(async path => xmlDocument(await read(path))));
+  const strings = tags(shared, 'si').map(richText);
+  const paths = new Map(tags(relationships, 'Relationship').filter(rel => rel.getAttribute('TargetMode') !== 'External')
+    .map(rel => [rel.getAttribute('Id'), rel.getAttribute('Target')]));
+  for (const sheet of tags(book, 'sheet')) {
+    const id = [...sheet.attributes].find(attr => attr.localName === 'id')?.value;
+    const target = paths.get(id);
+    if (!target) continue;
+    const path = new URL(target, 'https://workbook.invalid/xl/').pathname.slice(1);
+    const doc = xmlDocument(await read(path));
+    let columns;
+    const rows = [];
+    for (const row of tags(doc, 'row')) {
+      const cells = new Map();
+      for (const cell of tags(row, 'c')) {
+        const col = cell.getAttribute('r')?.match(/^[A-Z]+/)?.[0];
+        if (!col) continue;
+        const raw = tags(cell, 'v')[0]?.textContent || '';
+        const type = cell.getAttribute('t');
+        const value = type === 's' ? strings[Number(raw)] : type === 'inlineStr' ? richText(cell) : raw;
+        cells.set(col, (value || '').trim());
+      }
+      if (!columns) {
+        const headers = [...cells].map(([col, value]) => [value.replace(/\s/g, ''), col]);
+        const byName = new Map(headers);
+        if (byName.has('대상용어') && byName.has('순화어')) columns = [byName.get('대상용어'), byName.get('순화어')];
+        continue;
+      }
+      const pair = columns.map(col => cells.get(col));
+      if (pair.every(Boolean)) rows.push(pair);
+    }
+    if (rows.length) return rows;
+  }
+  throw new Error('‘대상 용어’와 ‘순화어’ 열 및 데이터가 있는 시트를 찾지 못했습니다.');
+}
+
+$('xlsx').addEventListener('change', async event => {
+  const file = event.target.files[0];
+  if (!file) return;
+  event.target.disabled = $('resetDict').disabled = true;
+  try {
+    settings.imported = await loadWorkbook(file);
+    settingsChanged();
+    status(settings.imported.length + '개를 불러왔습니다. ' + $('status').textContent);
+  } catch (error) {
+    status('사전 불러오기 실패 · ' + error.message);
+  } finally {
+    event.target.value = '';
+    event.target.disabled = $('resetDict').disabled = false;
+  }
+});
+
+$('lookup').addEventListener('input', renderLookup);
+$('resetDict').onclick = () => { settings.imported = null; settingsChanged(); };
+$('customForm').addEventListener('submit', event => {
+  event.preventDefault();
+  const term = $('term').value.trim();
+  const replacement = $('replacement').value.trim();
+  if (!term || !replacement) return;
+  settings.custom = settings.custom.filter(([key]) => key !== term);
+  settings.custom.push([term, replacement]);
+  event.target.reset();
+  settingsChanged();
+});
+$('exceptForm').addEventListener('submit', event => {
+  event.preventDefault();
+  const value = $('exception').value.trim();
+  if (!value) return;
+  if (!settings.exceptions.includes(value)) settings.exceptions.push(value);
+  event.target.reset();
+  settingsChanged();
+});
+$('analyze').onclick = analyze;
+$('mode').onchange = () => {
+  if (segments.length) status('문서 유형을 바꿨습니다. 새 유형으로 검사하려면 검사하기를 누르세요.');
+};
+$('editSource').onclick = () => {
+  $('source').hidden = false;
+  $('comparison').hidden = true;
+  $('editSource').hidden = true;
+  $('source').focus();
+  status('원문 편집 후 검사하기를 누르면 반영됩니다.');
+};
+$('sample').onclick = () => {
+  if ($('source').value.trim() && !window.confirm('입력창의 원문을 예문으로 바꿀까요?')) return;
+  $('source').value = $('mode').value === 'notice'
+    ? '지역 행사 참여자 모집 공고\n사업명: 가금류 체험 교실\n신청 대상: 주민 신청 기간: 11월 20일~11월 25일 신청 방법: 온라인 접수\n세부 일정은 가내시를 받은 뒤 안내합니다.'
+    : '주민과 함께하는 농촌 체험\n가금류가 생활하는 공간을 둘러보고, 담당자의 설명을 듣습니다.\n마을 입구의 가드레일을 점검합니다.';
+  $('source').hidden = false;
+  $('comparison').hidden = true;
+  $('editSource').hidden = true;
+  $('source').focus();
+  status('예문을 넣었습니다. 검사하기를 눌러 주세요.');
+};
+$('applyAll').onclick = () => setAll(true);
+$('keepAll').onclick = () => setAll(false);
+$('copy').onclick = async () => {
+  const value = finalText();
+  if (!value.trim()) return status('복사할 수정안이 없습니다.');
+  try {
+    await navigator.clipboard.writeText(value);
+    status('최종본을 복사했습니다.');
+  } catch {
+    const fallback = document.createElement('textarea');
+    fallback.value = value;
+    fallback.setAttribute('aria-label', '복사할 최종본');
+    $('result').after(fallback);
+    fallback.focus();
+    fallback.select();
+    if (document.execCommand('copy')) {
+      fallback.remove();
+      status('최종본을 복사했습니다.');
+    } else {
+      fallback.onblur = () => fallback.remove();
+      status('자동 복사를 사용할 수 없습니다. 선택된 최종본을 직접 복사하세요.');
+    }
+  }
+};
+updateDictionary();
+renderSuggestions();
+renderReadability();
+</script>
+</body>
+</html>
